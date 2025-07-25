@@ -116,7 +116,7 @@ exit
 - Django API - Swagger: http://localhost/api/swagger-ui
 - Django API - Redoc: http://localhost/api/redoc
 
-7. オプションで、curlやPostmanのようなツールを使って、APIリクエストを直接呼び出すこともできる。
+7. オプションで、curlやPostmanのようなツールを使ってAPIリクエストを直接呼び出すこともできる。
 
 8. アップデート後にサービスを再起動する
 ----------------------------------------
@@ -215,7 +215,7 @@ DJANGO_SUPERUSER_USERNAME=SYSTEM DJANGO_SUPERUSER_PASSWORD=system DJANGO_SUPERUS
 - Django API - Redoc: http://localhost:8000/api/redoc
 - セロリの花 UI: http://localhost:5555
 
-10. オプションで、curlやPostmanのようなツールを使って、APIリクエストを直接呼び出すこともできる。
+10. オプションで、curlやPostmanのようなツールを使ってAPIリクエストを直接呼び出すこともできる。
 
 11. コード更新後にローカルサービスを再起動する
 ---------------------------------------

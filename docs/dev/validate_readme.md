@@ -1,32 +1,32 @@
 
-# Application Structure
+# アプリケーションの構造
 
-## System Architecture
+## システム・アーキテクチャ
 
 ```{image} ../_static/dev_system_architecture_sketch.png
 :alt: System Architure
 :align: center
 ```
 
-The Validation Service is built on [django](https://www.djangoproject.com),
+バリデーション・サービスは[ジャンゴ](https://www.djangoproject.com),
 using [Postgres](https://www.postgresql.org) as the database,
 [Redis](https://www.redis.io) for task management,
 and [Celery](https://docs.celeryq.dev/en/stable/index.html) for distributing the work of running the validation tasks.
 The service consists of multiple containers managed with Docker compose.
 
-## Submodules
+## サブモジュール
 
-The application consists of three main submodules, each hosted in separate GitHub repositories. Docker Compose is configured to automatically bind the correct submodule versions for local deployment.
+アプリケーションは3つのメインサブモジュールで構成され、それぞれが別々のGitHubリポジトリでホストされています。 Docker Composeは、ローカルデプロイ用に正しいサブモジュールのバージョンを自動的にバインドするように設定されています。
 
-Documentation of the separate functionalities can be found within each submodule.
+個別の機能についてのドキュメントは、各サブモジュール内にあります。
 
-1. **Gherkin Rules**: Contains the rules for validation. It can be run independently by cloning the [repository](https://github.com/buildingSMART/ifc-gherkin-rules) and executing:
+1. **ガーキンルール**バリデーションのルールを含んでいます。[リポジトリ](https://github.com/buildingSMART/ifc-gherkin-rules)そして実行する：
 
    ```shell
    pytest -sv
    ```
 
-   Debugging individual rules is supported with commands like:
+   個々のルールのデバッグは、以下のようなコマンドでサポートされている：
 
    ``````shell
    python test/test_main.py alb001 # For a single rule
@@ -34,33 +34,33 @@ Documentation of the separate functionalities can be found within each submodule
    python test/test_main.py path_to_separate_file.py # For a separate file
    ``````
 
-2. **Shared DataModel**: This [module](https://github.com/buildingSMART/ifc-validation-data-model) includes Django data models shared between the main repository and the Gherkin repository,
+2. **共有データモデル**この[モジュール](https://github.com/buildingSMART/ifc-validation-data-model)には、メインリポジトリと Gherkin リポジトリで共有される Django データモデルが含まれます、
 serving as a submodule for both.
-3. **Certificate store**: This [module](https://github.com/buildingsmart-certificates/validation-service-vendor-certificates) serves as the listing of trusted certificates for verifying digital certificates appended to IFC models.
+3. **証明書ストア**この[モジュール](https://github.com/buildingsmart-certificates/validation-service-vendor-certificates)IFCモデルに付加されたデジタル証明書を検証するための、信頼できる証明書のリストとして機能する。
 
-NB: Previously there was a fourth submodule that performed the syntax verification on IFC-SPF models. This is now directly part of IfcOpenShell as `ifcopenshell.simple_spf`.
+注：以前は、IFC-SPFモデルの構文検証を行う4番目のサブモジュールがありました。 これは現在、IfcOpenShellの直接の一部となっています。`ifcopenshell.simple_spf`.
 
-## Running Validation Checks
+## バリデーション・チェックの実行
 
-The application supports multiple validation checks on one or multiple IFC files that can be run separately:
+このアプリケーションは、1つまたは複数のIFCファイルに対する複数の検証チェックをサポートしており、別々に実行することができます：
 
-- Syntax Check
-- Schema Check
-- Normative Rules (gherkin) Check
-- bSDD Check
+- 構文チェック
+- スキーマチェック
+- 規範規定（ガーキン）チェック
+- bSDDチェック
 
-# How to start?
+# 何から始めるべきか？
 
-Depending on your workflow, you can run all or some services via Docker Compose.
+ワークフローに応じて、全部または一部のサービスをDocker Compose経由で実行できます。
 
-Below are a few common options to run and debug these services locally.
+以下は、これらのサービスをローカルで実行し、デバッグするための一般的なオプションである。
 More scenario's exist - have a look at the various *make* files.
 
-## Option 1 - Run minimal set of services via Docker Compose (easiest to run)
+## オプション1 - Docker Compose経由で最小限のサービスセットを実行する（最も簡単に実行できる）
 
-1. Make sure Docker is running.
+1. Dockerが起動していることを確認する。
 
-2. Start all services.
+2. すべてのサービスを開始する。
 
 ```shell
 make start
@@ -70,7 +70,7 @@ or
 docker compose up
 ```
 
-3. This pulls Docker-hub images, builds and spins up **six** different services:
+3. これは、Docker-hubイメージをプルし、ビルドして起動する。**六**異なるサービス
 
 ```
 db       - PostgreSQL database
@@ -81,7 +81,7 @@ flower   - Celery flower dashboard
 frontend - React UI
 ```
 
-4. One-time only: create Django superuser accounts for Django Admin and Celery background worker(s), for example:
+4. 例えば、Django Admin と Celery バックグラウンドワーカー用の Django スーパーユーザアカウントを作成します：
 
 ```shell
 docker exec -it backend sh
@@ -95,21 +95,21 @@ DJANGO_SUPERUSER_USERNAME=SYSTEM DJANGO_SUPERUSER_PASSWORD=system DJANGO_SUPERUS
 exit
 ```
 
-5. Navigate to different services:
+5. さまざまなサービスにナビゲートする：
 
-- Validation Service - React UI: http://localhost
-- Django Admin UI: http://localhost/admin (or http://localhost:8000/admin) - default user/password: root/root
+- バリデーション・サービス - React UI: http://localhost
+- Django Admin UI: http://localhost/admin (または http://localhost:8000/admin) - デフォルトユーザ/パスワード: root/root
 - Django API - Swagger: http://localhost/api/swagger-ui
 - Django API - Redoc: http://localhost/api/redoc
-- Celery Flower UI: http://localhost:5555
+- セロリの花 UI: http://localhost:5555
 
-6. Optionally, use a tool like curl or Postman to invoke API requests directly
+6. オプションで、curlやPostmanのようなツールを使ってAPIリクエストを直接呼び出すこともできる。
 
-## Option 2 - Local debugging + infrastructure via Docker Compose (easiest to debug)
+## オプション2 - ローカルデバッグ + Docker Compose経由のインフラストラクチャ（デバッグが最も簡単）
 
-1. Make sure Docker is running.
+1. Dockerが起動していることを確認する。
 
-2. Start infrastructure services only (Redis, Postgres, Celery Flower)
+2. インフラサービスのみを起動（Redis、Postgres、Celery Flower）
 
 ```shell
 make start-infra
@@ -120,7 +120,7 @@ docker compose -f docker-compose.infra_only.yml up
 ```
 
 
-3. This pulls **three** different Docker-hub images and spins up  services:
+3. これは**みっつ**異なるDocker-hubイメージとサービスをスピンアップする：
 
 ```
 db       - PostgreSQL database
@@ -128,7 +128,7 @@ redis    - Redis instance
 flower   - Celery flower dashboard
 ```
 
-4. Start Django backend (Admin + API)
+4. Django バックエンドの開始 (Admin + API)
 
 ```shell
 cd backend
@@ -136,14 +136,14 @@ make install
 make start-django
 ```
 
-5. Start Celery worker(s)
+5. セロリ作業員の開始
 
 ```shell
 cd backend
 make start-worker
 ```
 
-6. Start Node Development server to serve the React UI
+6. React UIを提供するNode Developmentサーバーを起動する。
 
 ```shell
 cd frontend
@@ -151,7 +151,7 @@ npm install
 npm run start
 ```
 
-7. One-time only: create Django superuser accounts for Django Admin and Celery background worker(s), for example:
+7. 例えば、Django Admin と Celery バックグラウンドワーカー用の Django スーパーユーザアカウントを作成します：
 
 ```shell
 cd backend
@@ -161,12 +161,12 @@ DJANGO_SUPERUSER_USERNAME=root DJANGO_SUPERUSER_PASSWORD=root DJANGO_SUPERUSER_E
 DJANGO_SUPERUSER_USERNAME=SYSTEM DJANGO_SUPERUSER_PASSWORD=system DJANGO_SUPERUSER_EMAIL=system@localhost python3 manage.py createsuperuser --noinput
 ```
 
-8. Navigate to different services:
+8. さまざまなサービスにナビゲートする：
 
-- Validation Service - React UI: http://localhost:3000
-- Django Admin UI: http://localhost:8000/admin - default user/password: root/root
+- バリデーション・サービス - React UI: http://localhost:3000
+- Django Admin UI: http://localhost:8000/admin - デフォルトユーザ/パスワード: root/root
 - Django API - Swagger: http://localhost:8000/api/swagger-ui
 - Django API - Redoc: http://localhost:8000/api/redoc
-- Celery Flower UI: http://localhost:5555
+- セロリの花 UI: http://localhost:5555
 
-9. Optionally, use a tool like curl or Postman to invoke API requests directly
+9. オプションで、curlやPostmanのようなツールを使って、APIリクエストを直接呼び出すこともできる。

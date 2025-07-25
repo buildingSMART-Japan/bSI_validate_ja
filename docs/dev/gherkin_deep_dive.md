@@ -1,95 +1,95 @@
-# A deep dive into gherkin rule implementations
+# ガーキンルールの実装を深く掘り下げる
 
-## Decorators
+## 装飾家
 
 ### `@gherkin_ifc`
 
-This is used in place of `behave`'s default `@step_implementation` decorator
+の代わりに使用される。`behave`デフォルト`@step_implementation`装飾家
 to provide additional capabilities related to context stacking and other concerns
 related to tracking and evaluating instances in the IFC model.
 
 ### `@register_enum_type`
 
-This is a small new decorator for registering enumeration types in a simpler way.
+これは、列挙型をよりシンプルな方法で登録するための、小さな新しいデコレーターである。
 
-## Step handling
+## ステップハンドリング
 
 ### `execute_step()`
 
-Checks whether the current step being processed is a `Given` or `Then`.
+現在処理中のステップが`Given`または`Then`.
 
 ### `handle_given()`
 
-Handles a `Given` step.
+を扱う。`Given`ステップ
 
 ### `handle_then()`
 
-Handles a `Then` step.
+を扱う。`Then`ステップ
 
-## Context stacking
+## コンテキスト・スタッキング
 
-As steps are processed, they are captured in a persistent object of type `behave.runner.Context`.
+ステップが処理されると、それらは以下の型の永続オブジェクトに取り込まれます。`behave.runner.Context`.
 This context object includes a hidden attribute `_stack` that is used to 'stack' information
 and results for each step that is processed.
 
-It can be helpful to monitor the content of the `instances` attribute of each item in the 
+の内容をモニターすることは有益である。`instances`の各アイテムの 
 `context._stack` list.
 
 ---
 
-## Feature Tags
+## 特集タグ
 
-Feature tags in Behave are used to categorize and control the execution of Gherkin-based test rules in the validation service. These tags are placed at the top of each `.feature` file and can be referenced through the command-line interface using the `--tags` option and are accessed through `context.tags` within the step implementation files.
+BehaveのFeatureタグは、検証サービスにおけるGherkinベースのテストルールの実行を分類し、制御するために使用されます。 これらのタグは、各テストルールの先頭に配置されます。`.feature`ファイルを使い、コマンドラインインターフェイスから参照できる。`--tags`オプションを通してアクセスする。`context.tags`をステップの実装ファイルに追加する。
 
-### `@informal_propositions` and `@implementer-agreement`
+### `@informal_propositions`そして`@implementer-agreement`
 
-These tags mark **normative IFC rules**, which result in either a **passing**, **failing** or **not applicable** result in the validation service.
+これらのタグは**IFC規則**になる。**パッシング**,**失敗**または**該当なし**の結果を検証サービスに反映させる。
 
-> **Note:** These tags are planned to be merged into a single tag: `@normative-rule`.
+> **注：**これらのタグは1つのタグに統合される予定である：`@normative-rule`.
 
-To run only these rules via command line:
+これらのルールだけをコマンドラインで実行するには
 
 > python3 -m behave --no-capture -v --tags=@informal-propositions --define input=/path/to/your.ifc
 
 ### `@industry-practice`
 
-This tag indicates **best practice rules**. These result in **passing**, **warning**, or **not applicable** outcomes.
+このタグは以下を示す。**ベストプラクティスルール**これらの結果**パッシング**,**警告**あるいは**該当なし**結果
 
-To execute these locally:
+これらをローカルで実行する：
 > python3 -m behave --no-capture -v --tags=@industry-practice --define input=/path/to/your.ifc
 
 ### `@disabled`
 
-Rules marked with this tag are **disabled** and will not be executed by the validation service.
+このタグが付いたルールは以下の通り。**使用不能**であり、検証サービスによって実行されることはない。
 
-To explicitly **exclude** a rule, use the same --tags variable and a hyphen:
+明示的に**除外**ルールの場合は、同じ --tags 変数とハイフンを使用する：
 > python3 -m behave --no-capture -v --tags=@informal-propositions --tags=-@disabled --define input=/path/to/your.ifc
 
 
 
 ### `@AAA000`
 
-This tag identifies the **functional part** (`AAA`) and the **rule number** (`000`). For example:
+このタグは**機能部**(`AAA`)と**ルール番号**(`000`例えば
 
-- The fourth rule in the georeferencing functional part (accounting for `@GRF000`) would be tagged as `@GRF003`.
+- ジオリファレンス機能部分の4つ目のルール（以下のことを考慮する。`@GRF000`とタグ付けされる。`@GRF003`.
 
 
 ### `@versionX`
 
-This tag indicates the version of the `.feature` file.
+このタグは`.feature`ファイルである。
 The version number gets incremented whenever meaningful changes are made to the rule after its release.
 A 'meaningul' change is one that could result in different outcomes for the same IFC model.
 
-Minor changes such as fixing typos or adding control characters to a step implementation
+誤字脱字の修正、ステップ実装への制御文字の追加などのマイナーな変更
 are not considered a 'meaningful' change as they do not affect the end results of the validation process.
 
 
 ### `@no-activation`
 
-This tag ensures that a passing result does not activate the functional part. Instead, it will be marked as not applicable.
+このタグは、合格した結果が機能部分をアクティブにしないことを保証します。 代わりに、それは適用されないとマークされます。
 
-For example, GRF003, which is a georeferencing rule, validates whether every IfcFacility is linked to an IfcCoordinateReferenceSystem. However, the presence of an IfcFacility does not necessarily imply that the file is intended to include georeferencing. Therefore, if georeferencing is not required, the rule should not trigger a "pass" status that marks that functional part green on the software certification scorecards.
+例えば、地理参照ルールである GRF003 は、すべての IfcFacility が IfcCoordinateReferenceSystem にリンクされているかどうかを検証する。 しかし、IfcFacility の存在は、必ずしもそのファイルが地理参照を含むことを意図していることを意味しない。 したがって、地理参照が必要でない場合、このルールは、ソフトウェア認証スコアカード上でその機能部分を緑色にマークする「合格」ステータスをトリガーすべきではない。
 
-Tagging a rule with @no-activation filters the information recorded in the database, and the rule is not marked as passing. 
+ルールに@no-activationのタグを付けると、データベースに記録された情報がフィルタリングされ、ルールは合格とマークされない。 
 
-**This tag has no effect on error outcomes** — if the rule fails, the error is still raised and recorded as usual.
+**このタグはエラーの結果に影響しない**- ルールが失敗しても、エラーは発生し、通常通り記録される。

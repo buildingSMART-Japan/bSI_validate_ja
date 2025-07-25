@@ -1,67 +1,67 @@
-# Understanding the validation process
+# 検証プロセスを理解する
 
-Given an IFC file, the Validation Service provides a judgement of conformity
+IFCファイルが与えられると、バリデーション・サービスは適合性の判断を提供します。
 against the IFC standard - including schema and specification
 
-## STEP Syntax
+## STEP構文
 
-The first step in the validation process looks at the uploaded file to confirm that
+検証プロセスの最初のステップでは、アップロードされたファイルを見て、以下のことを確認します。
 it is a valid STEP Physical File (SPF) in accordance with [ISO 10303-21](https://www.iso.org/standard/63141.html).
 
-## IFC Schema
+## IFCスキーマ
 
-Schema validation consists of two parts:
+スキーマ検証は2つの部分で構成される：
 
-1. Schema Version
-2. Schema Compliance
+1. スキーム・バージョン
+2. コンプライアンス・スキーム
 
-### Schema Version
+### スキーム・バージョン
 
-This check confirms that the schema identifier is one of the following:
+このチェックでは、スキーマ識別子が以下のいずれかであることを確認する：
 
 - `IFC2X3`
 - `IFC4`
 - `IFC4X3_ADD2`
 
-### Schema Compliance
+### コンプライアンス・スキーム
 
-The schema compliance checks the following aspects that are defined in the EXPRESS schema:
+スキーマコンプライアンスは、EXPRESSスキーマで定義されている以下の点をチェックする：
 
- - Entity attributes are correctly populated, correct number of attributes and correct type and cardinalities in case of aggregates
- - Inverse attributes are correctly populated and with the correct cardinalities
- - Entity-scoped `WHERE` rules
- - Global rules
+ - エンティティの属性が正しく入力され、属性の数が正しく、集約の場合は正しいタイプとカーディナリティが入力されている。
+ - 逆属性は正しく入力され、正しいカーディナリティを持つ。
+ - エンティティ・スコープ`WHERE`規則
+ - グローバルルール
 
-This check also flags any entity types that are not included in a given schema version, or the instantiation of abstract entities.
+このチェックは、指定されたスキーマ・バージョンに含まれていないエンティティ・タイプや、抽象エンティティのインスタンス化にもフラグを立てる。
 
-For example: `IfcAlignment` entity is only valid for schema version `IFC4X3_ADD2`,
+例えば、こうだ：`IfcAlignment`エンティティはスキーマのバージョンでのみ有効です。`IFC4X3_ADD2`,
 so it is not valid as part of a file with schema version `IFC2X3`.
 
-## Normative Checks
+## 規範チェック
 
-There are two categories of normative checks:
+規範的なチェックには2つのカテゴリーがある：
 
-1. Implementer Agreements
-2. Informal Propositions
+1. インプリメンター契約
+2. 非公式な提案
 
-### Implementer Agreements
+### インプリメンター契約
 
-These are normative checks that have been ratified as official agreements amongst software implementers.
+これらは、ソフトウェア実装者の間で公式な合意として批准されている規範的なチェックである。
 
-### Informal Propositions
+### 非公式な提案
 
-These are normative checks that have not been ratified as implementer agreements,
+これらは実施協定として批准されていない規範的なチェックである、
 but are still considered mandatory for a file to be considered valid.
 
-## Additional, Non-normative Checks
+## 追加的、規範的でないチェック
 
-### Industry Practices
+### 業界慣行
 
-This step involves checking the IFC file against common practices and sensible defaults.
+このステップでは、IFCファイルを一般的な慣行や常識的なデフォルトと照らし合わせてチェックします。
 None of these checks render the IFC file invalid.
 Therefore, any issues identified result in warnings rather than errors.
 
-### buildingSMART Data Dictionary (bSDD) Compliance
+### buildingSMARTデータディクショナリ（bSDD）への準拠
 
 ```{note}
 bSDD Checks are temporarily disabled as of v0.6.6.

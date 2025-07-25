@@ -1,50 +1,50 @@
-# Detailed Information for Normative Rules
+# 規範規則の詳細情報
 
-Follow these steps to add a new rule to the Validation Service
+バリデーション・サービスに新しいルールを追加するには、以下の手順に従ってください。
 
-| n. | Step                                                                                     | Responsible                 |
+| n. | ステップ | 責任 |
 |----|------------------------------------------------------------------------------------------|-----------------------------|
-| 1  | Create a new branch in the bSI ifc-gherkin-rules repository                              | bSI Validation Service team |
-| 2  | In this branch, start developing the rule needed **following instructions below**        | rule developer              |
-| 3  | Create a pull request to further test the rule(s) behavior using the sandbox environment | rule developer              |
-| 4  | Assign a reviewer to the pull request when you think the rule is ready to be merged      | rule developer              |
-| 5  | Review the pull request                                                                  | bSI Validation Service team |
-| 6  | (optional) Fix the rule according to feedback from reviewer                              | rule developer              |
-| 7  | Approve and merge the pull request                                                       | bSI Validation Service team |
+| 1 | bSI ifc-gherkin-rules リポジトリに新しいブランチを作成する。 | bSIバリデーションサービスチーム |
+| 2 | このブランチでは、必要なルールの開発を開始する。 | ルール開発者 |
+| 3 | プルリクエストを作成し、サンドボックス環境を使用してルールの動作をさらにテストする。 | ルール開発者 |
+| 4 | プルリクエストにレビュアーを割り当てます。 | ルール開発者 |
+| 5 | プルリクエストを確認する | bSIバリデーションサービスチーム |
+| 6 | (オプション) レビューアからのフィードバックに従ってルールを修正する。 | ルール開発者 |
+| 7 | プルリクエストを承認してマージする | bSIバリデーションサービスチーム |
 
 ## 1. Branch creation
 
-In the buildingSMART [GitHub repository containing all rules](https://github.com/buildingSMART/ifc-gherkin-rules), create the branch that will be used to develop the new rule.
+ビルSMARTでは[すべてのルールを含むGitHubリポジトリ](https://github.com/buildingSMART/ifc-gherkin-rules)新しいルールの開発に使用するブランチを作成する。
 
-- Name the branch with the name of the new rule. Example: `GEM900` for a new rule in the geometry functional part
-- Add 1 rule per branch, to facilitate review (1 rule = 1 `.feature` file)
+- ブランチに新しいルールの名前を付ける。 例．`GEM900`ジオメトリー機能部の新しいルールについて
+- レビューを容易にするために、ブランチごとに1つのルールを追加する（1ルール＝1`.feature`ファイル)
 
-## 2. Rule development
+## 2. ルール開発
 
-A rule is considered complete when it has:
+ルールが完成したとみなされる：
 
-- a Gherkin [**feature file**](21-write-feature-files-gherkin-rules-for-ifc)
-- corresponding python implementation (aka, [**python steps**](22-write-python-steps))
-- a set of [**unit test files**](23-write-unit-test-files)
+- ガーキン[**フィーチャーファイル**](21-write-feature-files-gherkin-rules-for-ifc)
+- 対応するpython実装（別名、[**パイソンステップ**](22-write-python-steps))
+- 一組の[**単体テストファイル**](23-write-unit-test-files)
 
-Below are instructions for all these 3 components.
+以下は、これら3つのコンポーネントすべてについての説明である。
 
-(21-write-feature-files-gherkin-rules-for-ifc)=
-### 2.1) Write feature files (gherkin rules) for IFC
+(21-write-feature-files-gherkin-rules-for-ifc)=。
+### 2.1) IFC用のフィーチャーファイル（ガーキンルール）を書く
 
-A feature file is a file, written using Gherkin syntax, describing the rule behavior.
+フィーチャーファイルとは、ルールの動作を記述した、ガーキン構文で記述されたファイルのことである。
 In the branch just created, add a Gherkin feature file following these instructions.
 
-**File format**: `.feature`
+**ファイル形式**:`.feature`
 
-**Location**: https://github.com/buildingSMART/ifc-gherkin-rules/tree/main/features
+**所在地**https://github.com/buildingSMART/ifc-gherkin-rules/tree/main/features
 
-#### Naming convention for feature files
+#### 機能ファイルの命名規則
 
-- The file name is rule code_rule title
-- The rule code is made of 3 digits capital letters (taken from the list of [Functional parts](./functional_parts.md)) + 3 digits number
-- The rule code, and rule title, must be unique
-- The rule title shall have no space and shall use `-` as separator
+- ファイル名はrule code_rule title。
+- ルールコードは3桁の大文字で構成される。[機能部品](./functional_parts.md)) + 3桁の数字
+- ルールコードとルールタイトルは一意でなければならない。
+- ルールのタイトルにはスペースを入れず、以下のようにする。`-`セパレータとして
 
 <details><summary>wrong</summary>
 
@@ -61,22 +61,22 @@ SPS001_Basic-spatial-structure-for-buildings.feature
 ```
 </details>
 
-#### Mandatory content
+#### 必須コンテンツ
 
-`.feature` files:
-- must include one and only one of these tags to classify the validation category:
+`.feature`ファイルである：
+- は、検証カテゴリーを分類するために、これらのタグを1つだけ含まなければならない：
     - `@critical`
     - `@implementer-agreement`
     - `@informal-proposition`
-    - `@industry-practice` (warning; not a pass / fail)
-- must include a 3-character alpha tag to the functional part. See [Functional parts](./functional_parts.md)
-- must include a single tag indicating the version of the feature file as a 1-based integer
-  - Example: `@version1` for initial version of a feature file
-  - Example: `@version3` for the third version of a feature file
-    - Minor changes such as fixing typos or re-wording the description do not increment the version
-    - Any change to a **"Given"** or **"Then"** statement, or to a step implementation, requires the version number to be incremented by 1.
-- must include one or more tags indicating the [error code](error-codes) to be raised
-  - If all scenarios raise the same error, then this tag should be placed immediately above the **"Feature:"** line
+    - `@industry-practice`(警告；合否ではない）
+- は、機能部品に3文字のアルファタグを付けなければならない。 を参照のこと。[機能部品](./functional_parts.md)
+- には、フィーチャーファイルのバージョンを 1 ベースの整数で示すタグが 1 つ含まれていなければなりません。
+  - 例`@version1`機能ファイルの初期バージョン用
+  - 例`@version3`フィーチャーファイルの3番目のバージョン
+    - 誤字脱字の修正や説明文の書き直しなどの軽微な変更では、バージョンは上がりません。
+    - を変更した。**"与えられた"**または**「それから**ステートメント、またはステップの実装では、バージョン番号を1インクリメントする必要がある。
+- を示す1つ以上のタグが含まれていなければならない。[エラーコード](error-codes)上がる
+  - すべてのシナリオで同じエラーが発生する場合は、このタグを**特集**ライン
 
     <details><summary>example</summary>
 
@@ -90,7 +90,7 @@ SPS001_Basic-spatial-structure-for-buildings.feature
 
     </details>
 
-    - If some scenarios raise different error codes, then this tag should be placed immediately above each **"Scenario"
+    - いくつかのシナリオが異なるエラーコードを発生させる場合、このタグをそれぞれの**"シナリオ "のすぐ上に配置する。
       ** line
 
     <details><summary>example</summary>
@@ -112,8 +112,8 @@ SPS001_Basic-spatial-structure-for-buildings.feature
  
     </details>
   
-- must include exactly 1 Feature
-- the naming convention for the Feature is the following: rule code - rule title (the same used for the file name). For the rule title blank spaces must be used instead of `-` 
+- 正確に1つのフィーチャーを含まなければならない
+- フィーチャーの命名規則は、ルールコード - ルールタイトル（ファイル名と同じ）です。 ルールタイトルには、以下の代わりに空白を使用する必要があります。`-` 
 
 <details><summary>wrong</summary>
 
@@ -150,7 +150,7 @@ Then ...
 ```
 </details>
 
- - must include **a description of the rule** that start with "The rule verifies that..." 
+ - を含まなければならない。**規則の説明**で始まる。 
 
 <details><summary>example</summary>
 
@@ -166,8 +166,8 @@ The rule verifies that an Alignment has a nesting relationship with its componen
 ```
 </details>
 
-#### Mandatory Given(s)
-If the rule in the feature file applies only to specific IFC version(s) and/or View Definition(s), then the feature file (or each of its Scenarios, if it has more than one) must start with Given steps specifying the applicability of the following steps
+#### 必須
+フィーチャファイルのルールが特定の IFC バージョンおよび/またはビュー定義にのみ適用される場合、フィーチャファイル（またはシナリオが複数ある場合はその各シナリオ）は、以下のステップの適用可能性を指定する Given ステップで開始する必要があります。
 
 <details><summary>examples</summary>
 
@@ -181,13 +181,13 @@ Given A file with Model View Definition "CoordinationView" or "ReferenceView"
 ```
 </details>
 
-#### Optional content
-`.feature` files:
-- can include 1 or more Scenarios
-- Scenario titles have no constraints
-- can include the `@disabled` tag to temporarily remove them from processing
+#### オプション
+`.feature`ファイルである：
+- 1つ以上のシナリオを含むことができる
+- シナリオタイトルに制約はない
+- を含むことができる。`@disabled`タグで一時的に処理から外す
 
-#### No spaces between steps
+#### ステップとステップの間にスペースがない
 
 <details><summary>wrong</summary>
 
@@ -209,7 +209,7 @@ Then Each IfcAlignmentCant must be nested only by 1 IfcAlignment
 ```
 </details>
 
-#### Watch out for extra blank spaces
+#### 余分な空白に注意
 
 <details><summary>wrong</summary>
 
@@ -230,7 +230,7 @@ Then Each IfcAlignmentCant must be nested only by 1 IfcAlignment
 ```
 </details>
 
-#### Do not use punctuation at the end of the steps
+#### ステップの最後に句読点を使用しないでください。
 
 <details><summary>wrong</summary>
 
@@ -251,7 +251,7 @@ Then Each IfcAlignmentCant must be nested only by 1 IfcAlignment
 ```
 </details>
 
-#### Be careful when typing parameters. They are case-sensitive!
+#### 大文字と小文字は区別される！
 
 <details><summary>wrong</summary>
 
@@ -267,7 +267,7 @@ Given A model with Schema "IFC4.3"
 </details>
 
 #### Must vs Shall
-Use **must**, not **shall** to impose requirements.
+用途**マスト**ではない。**は**要件を課すこと。
 [ALB001_Alignment-in-spatial-structure.feature](https://github.com/buildingSMART/ifc-gherkin-rules/blob/main/features/ALB002_Alignment-layout.feature)
 "Shall" is ambiguous, also in the legal field the community is moving to a strong preference for “must” as the clearest way to express a requirement or obligation.
 
@@ -288,9 +288,9 @@ Then There must be exactly 1 IfcSite element(s)
 ```
 </details>
 
-#### Verbs for IFC relationships
+#### IFC関係の動詞
 
-When a rule requires a specific IFC relationship to exist, refer to the table below for the right verb to be used.
+ルールが特定のIFCリレーションシップの存在を必要とする場合、以下の表を参照し、適切な動詞を使用する。
 
 | IFC relationship       | Verb for rules        | Examples                                                           |
 |------------------------|-----------------------|--------------------------------------------------------------------|
@@ -299,12 +299,13 @@ When a rule requires a specific IFC relationship to exist, refer to the table be
 | ...                    |                       |
 
 
+
 #### Reference for schema versioning
 
-Rules that are applicable only to specific schema versions must specify
+特定のスキーマ・バージョンにのみ適用される規則は、次のように指定しなければならない。
 the schema version with the initial `Given` statement.
 
-For example, alignment entities were introduced in IFC4.3 and are not valid
+例えば、アライメント・エンティティはIFC4.3で導入されたもので、無効である。
 in earlier schema versions.
 
 ```
@@ -313,7 +314,7 @@ Given An IfcAlignment
 Then ...
 ```
 
-Multiple schema versions may be specified if applicable.
+該当する場合は、複数のスキーマ・バージョンを指定することができる。
 
 ```
 Given A model with Schema "IFC2X3" or "IFC4"
@@ -321,51 +322,51 @@ Given An IfcElement
 Then ...
 ```
 
-##### Valid (active, not withdrawn or retired) Schema Versions 
+##### 有効な（撤回または引退していない）スキーマ・バージョン 
 
-| Version | Formal Name   | Schema id   | Common Name |
+| バージョン | 正式名称 | スキーマID | 一般名 |
 |---------|---------------|-------------|-------------|
-| 4.3.2.0 | IFC4.3 ADD2   | IFC4X3_ADD2 | IFC4.3      |
-| 4.0.2.1 | IFC4 ADD2 TC1 | IFC4        | IFC4        |
-| 2.3.0.1 | IFC2x3 TC1    | IFC2X3      | IFC2x3      |
+| 4.3.2.0 | IFC4.3 ADD2 | IFC4X3_ADD2 | IFC4.3 |
+| 4.0.2.1 | IFC4 ADD2 TC1 | IFC4 | IFC4 |
+| 2.3.0.1 | IFC2x3 TC1 | IFC2X3 | IFC2x3 |
 
 (22-write-python-steps)=
-### 2.2) Write python steps 
+### 2.2) pythonのステップを書く 
 
-The python steps are the implementation (using python language) of the Gherkin grammar used in the feature files.
+pythonのステップは、特徴ファイルで使用されているGherkin文法の実装（python言語を使用）です。
 In the same branch used for the Gherkin rules, change or add python steps following these instructions.
 
-**File format**: `.py`
+**ファイル形式**:`.py`
 
-**Location**: https://github.com/buildingSMART/ifc-gherkin-rules/tree/main/features/steps
+**所在地**https://github.com/buildingSMART/ifc-gherkin-rules/tree/main/features/steps
 
-#### Naming convention for python files
+#### pythonファイルの命名規則
 
-For the moment, all python steps are contained in [steps.py](https://github.com/buildingSMART/ifc-gherkin-rules/blob/main/features/steps/steps.py). Therefore, **you should not create a new python file, just expand the existing one.**
+今のところ、すべてのpythonステップは[steps.py](https://github.com/buildingSMART/ifc-gherkin-rules/blob/main/features/steps/steps.py)したがって**新しいpythonファイルは作らず、既存のファイルを拡張してください。**
 
-:construction: :construction: :construction:
+建設: :建設: :建設：
 *In the future, when this file grows, python steps may be splitted in more files - using a certain criteria (e.g., functional parts). When this will be the case, the instruction will be: locate the best .py file to host your steps and start adding your steps*
 
-#### Steps parametrisation
+#### ステップパラメーター
 
-When creating a new step, think about parametrisation and optimisation of the step for future uses.
+新しいステップを作成する際には、パラメトライゼーションと将来的なステップの最適化について考えてください。
 
-#### Step re-use
+#### ステップの再利用
 
-Before creating a new step, check if something similar already exist.
+新しいステップを作る前に、似たようなものが既に存在しないかチェックする。
 Try to reuse existing steps.
 
-#### Do not use "when" or "And" keywords
+#### when "や "And "のキーワードは使わないこと。
 
-The "when" keyword must not be used.
+when」キーワードは使用してはならない。
 The "And" keyword must not be used.
 Instead, repeat the "Given" or "Then" as appropriate.
 
-Allowed keywords are: `Given`, and `Then`.
+使用可能なキーワードは以下の通り：`Given`そして`Then`.
 
-#### Use of existing IfcOpenShell APIs
+#### 既存のIfcOpenShell APIの使用
 
-Try not to use existing functionality included in the `ifcopenshell.api` namespace.
+に含まれる既存の機能を使用しないようにしてください。`ifcopenshell.api`の名前空間を使用します。
 
 
 
@@ -375,25 +376,25 @@ Try not to use existing functionality included in the `ifcopenshell.api` namespa
 
 
 (23-write-unit-test-files)=
-### 2.3) Write unit test files 
+### 2.3) ユニットテストファイルの作成 
 
-Unit test files are atomic IFC files, created to develop a rule and test its behavior.
+ユニット・テスト・ファイルは、ルールを開発し、その動作をテストするために作成されるアトミックなIFCファイルです。
 In the same branch used for the Gherkin rules, and python steps, create unit test files following these instructions. **IMPORTANT**: every rule developed must have a set of unit test files.
 
-**File format**: `.ifc`
+**ファイル形式**:`.ifc`
 
-**Location**:[ifc-gherkin-rules/tree/main/test/files](https://github.com/buildingSMART/ifc-gherkin-rules/tree/main/test/files)
+**所在地**:[ifc-gherkin-rules/tree/main/test/files](https://github.com/buildingSMART/ifc-gherkin-rules/tree/main/test/files)
 
-- in the test/files folder, create a subfolder using the rule code (E.g., ALB001)
-- add the set of unit test files for that rule in this subfolder
+- test/filesフォルダに、ルールコード（例：ALB001）を使用してサブフォルダを作成します。
+- このサブフォルダに、そのルールのユニットテスト・ファイルを追加する。
 
-#### Naming convention for unit test files
+#### ユニットテスト・ファイルの命名規則
 
-Unit test files must follow this naming convention:
+ユニットテストのファイルは、この命名規則に従わなければならない：
 
 `Expected result`-`rule code`-`rule scenario`-`short_informative_description`.ifc
 
-Or in case where a rule has no scenarios:
+あるいは、ルールにシナリオがない場合：
 `Expected result`-`rule code`-`short_informative_description`.ifc
 
 <details><summary>Examples</summary>
@@ -407,86 +408,84 @@ fail-alb001-short_informative_description.ifc
 </details>
 
 
-#### Content of the unit tests subfolder
+#### ユニットテストサブフォルダーの内容
 
-The unit test subfolder must contain:
+ユニットテストのサブフォルダーには、以下を含める必要がある：
 
-- all unit test files (.ifc)
-- a README file (.md), listing the files and their expected behavior. Using the [template table](#table-template-for-unit-test-files) below
-- where used, the script (.py) created to generate the unit test files 
+- すべてのユニットテストファイル (.ifc)
+- READMEファイル(.md)には、ファイルとその期待される動作が記載されています。[テンプレートテーブル](#table-template-for-unit-test-files)以下
+- を使用する場合、ユニットテストファイルを生成するために作成されたスクリプト（.py）です。 
 
-#### Number of unit tests required
+#### 必要な単体テストの数
 
-- Each rule developed must have a set of unit test files
-- There must be at least 1 fully compliant unit test file
-- Fail files must cover all scenarios of the rule
+- 開発された各ルールには、ユニットテスト・ファイルのセットが必要です。
+- 完全に準拠したユニットテスト・ファイルが少なくとも1つなければならない。
+- フェイルファイルは、ルールのすべてのシナリオをカバーしなければならない。
 
-(table-template-for-unit-test-files)=
-#### Table template for unit test files
+(ユニットテスト・ファイル用テーブルテンプレート）=。
+#### ユニットテスト・ファイル用テーブル・テンプレート
 
-Example table describing unit test expected results
+単体テストの期待結果を記述した表の例
 
-| File name                                             | Expected result | Error log                                                                        | Description                                                                      |
+| ファイル名 | 期待される結果 | エラーログ | 説明 |
 |-------------------------------------------------------|-----------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| pass-alb002-alignment-layout                          | success         | n.a.                                                                             |                                                                                  |
-| fail-alb002-scenario01-nested_attributes_IfcAlignment | fail            | The instance IfcAlignment is nesting two instances of IfcAlignmentHorizontal ... | Error is descriptive or exactly the error in pytest? If exactly, multiple row... |
-| fail-alb002-scenario02-two_alignments                 | fail            | The following 2 instances were encountered: IfcAlignment #23, IfcAlignment #906  | For IfcAlignmentHorizontal, IfcAlignmentVertical and IfcAlignmentCant            |
-| fail-alb002-scenario03-layout                   | fail            | The instance #906=IfcAlignment is nesting #907=IfcWall                           | Includes errors for scenario 2                                                   |
-| fail-alb002-scenario04-alignment_segments             | fail            | The instance (s) #28=IfcAlignmentHorizontal is assigned to #906=IfcWall          | @todo IfcAlignmentVertical, IfcAlignmentCant. As well as empty list/typo's?      |
-
-
+| pass-alb002-アライメント・レイアウト | 成功 | n.a. |  |
+| fail-alb002-scenario01-nested_attributes_IfcAlignment | 失敗 | インスタンスIfcAlignmentは、2つのインスタンスIfcAlignmentHorizontal ... をネストしている。 | エラーは説明的なものですか、それともpytestのエラーと同じですか？ もし同じなら、複数の行が... |
+| fail-alb002-シナリオ02-2_アラインメント | 失敗 | 次の2つのインスタンスが発生した：IfcAlignment #23、IfcAlignment #906 | IfcAlignmentHorizontal、IfcAlignmentVertical、IfcAlignmentCantの場合 |
+| フェイルアルバム002-シナリオ03-レイアウト | 失敗 | インスタンス#906=IfcAlignmentは#907=IfcWallをネストしている。 | シナリオ2のエラーを含む |
+| fail-alb002-scenario04-alignment_segments | 失敗 | インスタンス#28=IfcAlignmentHorizontalは#906=IfcWallに割り当てられている。 | リストやタイポの空白と同様に、@todo IfcAlignmentVertical, IfcAlignmentCant? |
 
 ## 4. Assign a reviewer to the pull request
 ...
-## 5. Review the pull request
+## 5. プルリクエストを確認する
 ...
-## 6. (optional) Fix the rule according to feedback from reviewer
+## 6. (オプション) レビューアからのフィードバックに従ってルールを修正する。
 ...
-## 7. Approve and merge the pull request
+## 7. プルリクエストを承認してマージする
 ...
 
-## Appendix
+## 付録
 
-(error-codes)=
-### Error Codes
+(エラーコード
+### エラーコード
 
-Error codes are used to classify and categorize outcomes from the validation service and are
+エラーコードは、検証サービスの結果を分類し、分類するために使用される。
 implemented in [ifc-validation-data-model/main/models.py#L937](https://github.com/buildingSMART/ifc-validation-data-model/blob/main/models.py#L937).
 
-| Error Code | Description                            |
+| エラーコード | 説明 |
 |------------|----------------------------------------|
-| P00010     | Passed                                 |
-| N00010     | Not Applicable                         |
-|            |                                        |
-| E00001     | Syntax Error                           |
-| E00002     | Schema Error                           |
-| E00010     | Type Error                             |
-| E00020     | Value Error                            |
-| E00030     | Geometry Error                         |
-| E00040     | Cardinality Error                      |
-| E00050     | Duplicate Error                        |
-| E00060     | Placement Error                        |
-| E00070     | Units Error                            |
-| E00080     | Quantity Error                         |
-| E00090     | Enumerated Value Error                 |
-| E00100     | Relationship Error                     |
-| E00110     | Naming Error                           |
-| E00120     | Reference Error                        |
-| E00130     | Resource Error                         |
-| E00140     | Deprecation Error                      |
-| E00150     | Shape Representation Error             |
-| E00160     | Instance Structure Error               |
-|            |                                        |
-| W00010     | Alignment Contains Business Logic Only |
-| W00020     | Alignment Contains Geometry Only       |
-| W00030     | Warning                                |
-|            |                                        |
-| X00040     | Executed                               |
+| P00010 | 合格 |
+| N00010 | 該当なし |
+|  |  |
+| E00001 | 構文エラー |
+| E00002 | スキーマエラー |
+| E00010 | タイプエラー |
+| E00020 | エラー値 |
+| E00030 | ジオメトリー・エラー |
+| E00040 | カーディナリティ・エラー |
+| E00050 | 重複エラー |
+| E00060 | プレースメント・エラー |
+| E00070 | 単位エラー |
+| E00080 | 数量エラー |
+| E00090 | 列挙値エラー |
+| E00100 | 人間関係のエラー |
+| E00110 | ネーミング・エラー |
+| E00120 | リファレンスエラー |
+| E00130 | リソースエラー |
+| E00140 | 非推奨エラー |
+| E00150 | 形状表現エラー |
+| E00160 | インスタンス構造エラー |
+|  |  |
+| W00010 | アライメントはビジネス・ロジックのみを含む |
+| W00020 | アライメントはジオメトリのみを含む |
+| W00030 | 警告 |
+|  |  |
+| X00040 | 実行済み |
 
 #### Notes
 
-`Not Applicable` refers to a rule that does not apply because of the schema version.
+`Not Applicable`は、スキーマのバージョンによって適用されないルールを指す。
 `Executed` refers to a rule that does apply because of schema version,
 but the model does not contain any entities validated as part of a particular rule.
 
-Both outcomes are reported as "N/A" in the validation service user interface.
+どちらの結果も、検証サービスのユーザーインターフェイスでは「該当なし」と報告される。

@@ -1,21 +1,21 @@
-# IFC Gherkin rules
+# IFCガーキンルール
 
-## Usage as part of buildingSMART validation service
+## buildingSMART検証サービスの一環としての利用
 
-This repository is one of three submodules in the overall validation service.
+このリポジトリは、検証サービス全体における3つのサブモジュールのうちの1つである。
 See [application_structure](#application-structure) for more information.
 
-## Making changes
+## 変更を加える
 
-The rules developed in this repository follow the general ideas of Gherkin and its python implementation behave.
+このリポジトリで開発されたルールは、Gherkinとそのpython実装の動作の一般的なアイデアに従っています。
 
-This means there are human-readable definitions of rules and Python implementations.
+つまり、人間が読めるルールの定義とPythonの実装があるということだ。
 
-A third component of this repository are minimal sample files with expected outcomes, which means that extensions and modifications can be suggested with confidence of not breaking existing functionality.
+このリポジトリの3つ目の要素は、期待される結果を備えた最小限のサンプルファイルである。これは、既存の機能を壊さないという確信を持って、拡張や修正を提案できることを意味する。
 
-## Command line usage
+## コマンドラインの使用法
 
-Informal propositions and implementer agreements written in Gherkin for automatic validation of IFC building models using steps implemented in IfcOpenShell.
+IfcOpenShellで実装されたステップを使用したIFCビルディングモデルの自動検証のために、Gherkinで記述された非公式命題と実装者合意。
 
 ```shell
 $ python -m ifc-gherkin-rules ifc-gherkin-rules\test\files\gem001\fail-gem001-cube-advanced-brep.ifc

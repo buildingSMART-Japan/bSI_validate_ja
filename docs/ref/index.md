@@ -1,6 +1,6 @@
-# Reference Information
+# 参考情報
 
-## Additional Information for Normative Rules
+## 規範規則に関する追加情報
 
 ```{include} ./normative-rules/ALB021.md
 :heading-offset: 1
