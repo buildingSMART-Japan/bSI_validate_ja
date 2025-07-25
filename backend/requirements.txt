@@ -1,0 +1,52 @@
+# django
+django
+djangorestframework
+django-filter
+django-cors-headers
+django-cleanup
+django-sql-explorer
+drf-spectacular
+drf-spectacular[sidecar]
+
+# celery
+django-celery-results
+django-celery-beat
+celery
+celery[redis]
+
+# servers + utils
+redis
+psycopg2-binary
+psycopg[pool]
+sqlalchemy
+sqlalchemy-utils
+gunicorn
+gevent
+psutil
+python-dotenv
+markdown
+authlib
+
+# bsi
+lark-parser
+packaging
+pyparsing
+behave
+pytest
+pydantic
+pyspellchecker
+requests
+pydot
+numpy
+rtree
+networkx
+pyyaml
+mpmath
+shapely
+python-ranges
+pyproj==3.7.1
+
+# dev
+django-debug-toolbar
+flake8
+deprecated
