@@ -158,9 +158,12 @@ jobs:
           
       - name: Fetch sources & submodules
         run: |
-          ssh ssh_host 'cd ${{ vars.REPO_CLONE_PATH }}
-          git pull && git checkout -q ${{ inputs.branch }} && git pull
-          sudo make fetch-modules'
+          ssh ssh_host 'set -euo pipefail; \
+            cd ${{ vars.REPO_CLONE_PATH }} && \
+            git pull && \
+            git checkout -q ${{ inputs.branch }} && \
+            git pull && \
+            sudo make fetch-modules'
 
       - name: Checkout correct branches
         run: |
