@@ -1,10 +1,8 @@
 # ユーザーガイド
-
 ## はじめに
-
-データ検証はopenBIMの重要な要素です。<sup>&reg;</sup>ワークフロー。
-The IFC Validation Services allows users to check the validity of their IFC models
-against the IFC standard.
+データの検証は、<sup>openBIM</sup>&reg;ワークフローの重要な要素です。  
+IFC Validation Services を利用することで、ユーザーはIFC モデルの妥当性をチェックすることができる。  
+IFC 。
 
 ```{include} using.md
 :heading-offset: 1

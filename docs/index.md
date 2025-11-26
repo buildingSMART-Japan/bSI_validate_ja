@@ -1,5 +1,4 @@
-# Welcome to the buildingSMART Validation Service Docs!
-
+# buildingSMART Validation Service Docsへようこそ！
 ```{toctree}
 user/index.md
 dev/index.md

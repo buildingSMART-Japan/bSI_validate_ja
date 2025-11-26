@@ -1,95 +1,79 @@
 # ガーキンルールの実装を深く掘り下げる
-
 ## 装飾家
-
 ### `@gherkin_ifc`
-
-の代わりに使用される。`behave`デフォルト`@step_implementation`装飾家
-to provide additional capabilities related to context stacking and other concerns
-related to tracking and evaluating instances in the IFC model.
+これは`behave` のデフォルトの `@step_implementation`デコレータ  
+コンテキストの積み重ねやその他の懸念事項に関する追加機能を提供する。  
+IFC モデルにおけるインスタンスの追跡と評価に関連する。
 
 ### `@register_enum_type`
-
 これは、列挙型をよりシンプルな方法で登録するための、小さな新しいデコレーターである。
 
 ## ステップハンドリング
-
 ### `execute_step()`
-
-現在処理中のステップが`Given`または`Then`.
+現在処理中のステップが`Given` か`Then` かをチェックする。
 
 ### `handle_given()`
-
-を扱う。`Given`ステップ
+`Given` 。
 
 ### `handle_then()`
-
-を扱う。`Then`ステップ
+`Then` 。
 
 ## コンテキスト・スタッキング
+ステップが処理されると、`behave.runner.Context` 型の永続オブジェクトに取り込まれます。  
+このコンテキストオブジェクトには、情報を'スタック'するための隠し属性`_stack` 。  
+と、処理される各ステップの結果。
 
-ステップが処理されると、それらは以下の型の永続オブジェクトに取り込まれます。`behave.runner.Context`.
-This context object includes a hidden attribute `_stack` that is used to 'stack' information
-and results for each step that is processed.
-
-の内容をモニターすることは有益である。`instances`の各アイテムの 
-`context._stack` list.
+の各項目の`instances` 属性の内容を監視することは有用である。   
+`context._stack` のリストにある。
 
 ---
 
 ## 特集タグ
-
-BehaveのFeatureタグは、検証サービスにおけるGherkinベースのテストルールの実行を分類し、制御するために使用されます。 これらのタグは、各テストルールの先頭に配置されます。`.feature`ファイルを使い、コマンドラインインターフェイスから参照できる。`--tags`オプションを通してアクセスする。`context.tags`をステップの実装ファイルに追加する。
+Behaveのフィーチャータグは、検証サービスにおけるGherkinベースのテストルールの実行を分類および制御するために使用されます。これらのタグは、`.feature` ファイルの先頭に配置され、`--tags` オプションを使用してコマンドラインインタフェースから参照できます。また、ステップ実装ファイル内の`context.tags` からもアクセスできます。
 
 ### `@informal_propositions`そして`@implementer-agreement`
+これらのタグは、バリデーションサービスにおいて**合格**、**不合格**、または**適用不可の**いずれかの結果をもたらす、**規範的なIFC ルールを**マークする。
 
-これらのタグは**IFC規則**になる。**パッシング**,**失敗**または**該当なし**の結果を検証サービスに反映させる。
-
-> **注：**これらのタグは1つのタグに統合される予定である：`@normative-rule`.
+**&gt; 注：**これらのタグは`@normative-rule` に統合される予定です。
 
 これらのルールだけをコマンドラインで実行するには
 
 > python3 -m behave --no-capture -v --tags=@informal-propositions --define input=/path/to/your.ifc
 
 ### `@industry-practice`
-
-このタグは以下を示す。**ベストプラクティスルール**これらの結果**パッシング**,**警告**あるいは**該当なし**結果
+このタグは**ベストプラクティスのルールを**示す。これらの結果は、**合格**、**警告**、または**該当なしと**なります。
 
 これらをローカルで実行する：
 > python3 -m behave --no-capture -v --tags=@industry-practice --define input=/path/to/your.ifc
 
 ### `@disabled`
+このタグでマークされたルールは**無効で**あり、検証サービスによって実行されることはない。
 
-このタグが付いたルールは以下の通り。**使用不能**であり、検証サービスによって実行されることはない。
-
-明示的に**除外**ルールの場合は、同じ --tags 変数とハイフンを使用する：
+ルールを明示的に**除外**するには、同じ --tags 変数とハイフンを使用する：
 > python3 -m behave --no-capture -v --tags=@informal-propositions --tags=-@disabled --define input=/path/to/your.ifc
 
 
 
 ### `@AAA000`
+このタグは、**一部の機能部品**（`AAA` ）と**ルール番号**（`000` ）を識別する。例えば
 
-このタグは**機能部**(`AAA`)と**ルール番号**(`000`例えば
-
-- ジオリファレンス機能部分の4つ目のルール（以下のことを考慮する。`@GRF000`とタグ付けされる。`@GRF003`.
+- ジオリファレンス機能部分の4番目のルール（`@GRF000` ）は、`@GRF003` としてタグ付けされる。
 
 
 ### `@versionX`
+このタグは`.feature` ファイルのバージョンを示す。  
+バージョン番号は、リリース後にルールに意味のある変更が加えられるたびにインクリメントされる。  
+意味のある'変化とは、同じIFC モデルでも異なる結果をもたらす可能性のある変化のことである。
 
-このタグは`.feature`ファイルである。
-The version number gets incremented whenever meaningful changes are made to the rule after its release.
-A 'meaningul' change is one that could result in different outcomes for the same IFC model.
-
-誤字脱字の修正、ステップ実装への制御文字の追加などのマイナーな変更
-are not considered a 'meaningful' change as they do not affect the end results of the validation process.
+誤字脱字の修正、ステップ実装への制御文字の追加などのマイナーな変更  
+それらは、検証プロセスの最終結果に影響を与えないため、意味のある 変更とはみなされない。
 
 
 ### `@no-activation`
+このタグは、合格した結果が一部の機能部をアクティブにしないことを保証する。その代わり、該当なしとマークされる。
 
-このタグは、合格した結果が機能部分をアクティブにしないことを保証します。 代わりに、それは適用されないとマークされます。
-
-例えば、地理参照ルールである GRF003 は、すべての IfcFacility が IfcCoordinateReferenceSystem にリンクされているかどうかを検証する。 しかし、IfcFacility の存在は、必ずしもそのファイルが地理参照を含むことを意図していることを意味しない。 したがって、地理参照が必要でない場合、このルールは、ソフトウェア認証スコアカード上でその機能部分を緑色にマークする「合格」ステータスをトリガーすべきではない。
+例えば、地理参照ルールである GRF003 は、すべてのIfcFacility がIfcCoordinateReferenceSystem にリンクされているかどうかを検証する。しかし、IfcFacility が存在しても、そのファイルが必ずしも地理参照を含むことを意図しているとは限らない。したがって、ジオリファレンスが要求されない場合、このルールは、ソフトウェア認証のスコアカード上で、その機能部分を緑色にマークする"合格"ステータスをトリガーすべきではない。
 
 ルールに@no-activationのタグを付けると、データベースに記録された情報がフィルタリングされ、ルールは合格とマークされない。 
 
-**このタグはエラーの結果に影響しない**- ルールが失敗しても、エラーは発生し、通常通り記録される。
+**このタグはエラーの結果には影響しない**。ルールが失敗しても、エラーは発生し、通常どおり記録される。

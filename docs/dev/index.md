@@ -1,5 +1,4 @@
 # 開発者ガイド
-
 ```{include} validate_readme.md
 :heading-offset: 1
 ```
