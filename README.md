@@ -19,8 +19,8 @@
 ### サブモジュール
 各機能のドキュメントは各サブモジュール内にあります。
 
-1. **ガーキンルール**検証ルールを含みます。リポジトリをクローンして実行することで独立して実行できます：  
-https://github.com/buildingSMART/ifc-ガーキンルール
+1. ガーキンルール検証ルールを含みます。リポジトリをクローンして実行することで独立して実行できます：https://github.com/buildingSMART/ifc-gherkin-rules
+
 
    ```
    pytest -sv
@@ -34,11 +34,11 @@ https://github.com/buildingSMART/ifc-ガーキンルール
    python test/test_main.py path_to_separate_file.py # For a separate file
    ``````
 
-1. **共有データモデル**：このモジュールはメインリポジトリと Gherkin リポジトリの間で共有される Django データモデルを含み、両方のサブモジュールとして機能します。  
-https://github.com/buildingSMART/ifc-バリデーション・データ・モデル
+1. 共有データモデル：このモジュールはメインリポジトリとガーキンリポジトリの間で共有されますジャンゴデータモデルを含み、両方のサブモジュールとして機能します。
+
 
 ## バリデーション・チェックの実行
-このアプリケーションは、1つまたは複数のIFC ファイルに対して、別々に実行できる複数の検証チェックをサポートしています：
+このアプリケーションは、1つまたは複数のIFCファイルに対する複数の検証チェックをサポートしており、別々に実行することができます：
 
 - 構文チェック
 - スキーマチェック
@@ -123,7 +123,7 @@ make stop            # or: docker compose down
 # 2 - 最新のコードを取得する
 make checkout        # defaults to main
 #       または： make checkout BRANCH=development
-# 3 - イメージを再構築し（Dockerfileまたはベースイメージが変更された場合）、開始する。
+# 3 - イメージを再構築し（Dockerfileまたはベースイメージが変更された場合）、開始する
 docker compose up -d --build
 ```
    
@@ -208,7 +208,7 @@ DJANGO_SUPERUSER_USERNAME=SYSTEM DJANGO_SUPERUSER_PASSWORD=system DJANGO_SUPERUS
 - Django API - Redoc: http://localhost:8000/api/redoc
 - セロリの花 UI: http://localhost:5555
 
-1. オプションで、curlやPostmanのようなツールを使って、APIリクエストを直接呼び出すこともできる。
+1. オプションで、curlやPostmanのようなツールを使ってAPIリクエストを直接呼び出すこともできる。
 
 
 1. コード更新後にローカルサービスを再起動する

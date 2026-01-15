@@ -6,11 +6,11 @@
 :align: center
 ```
 
-バリデーションサービスは[django](https://www.djangoproject.com) で構築されています、  
-データベースとして[Postgresを](https://www.postgresql.org)使用している、  
-タスク管理のための[Redis](https://www.redis.io)、  
-と[Celeryを](https://docs.celeryq.dev/en/stable/index.html)使い、検証タスクの実行作業を分散させた。  
-このサービスは、Docker composeで管理される複数のコンテナで構成されている。
+バリデーションサービスは[djangoを](https://www.djangoproject.com)ベースに構築されており、データベースには[Postgres](https://www.postgresql.org)、タスク管理には[Redis](https://www.redis.io)、バリデーションタスクの実行作業の分散には[Celeryを](https://docs.celeryq.dev/en/stable/index.html)使用しています。このサービスは、Docker composeで管理される複数のコンテナで構成されています。
+
+
+
+
 
 ## サブモジュール
 アプリケーションは3つのメインサブモジュールで構成され、それぞれが別々のGitHubリポジトリでホストされています。Docker Composeは、ローカルのデプロイ用に正しいサブモジュールのバージョンを自動的にバインドするように設定されています。
@@ -31,14 +31,15 @@
    python test/test_main.py path_to_separate_file.py # For a separate file
    ``````
 
-1. **共有データモデル**：この[モジュールには](https://github.com/buildingSMART/ifc-validation-data-model)、メインリポジトリと Gherkin リポジトリで共有される Django データモデルが含まれます、  
-のサブモジュールとして機能する。
-1. **証明書ストア**：この[モジュールは](https://github.com/buildingsmart-certificates/validation-service-vendor-certificates)、IFC モデルに付加されたデジタル証明書を検証するための、信頼できる証明書のリストとして機能する。
+1. 共有データモデル：この[モジュールには](https://github.com/buildingSMART/ifc-validation-data-model)、メインリポジトリと Gherkin リポジトリで共有される Django データモデルが含まれます。
 
-注：以前は、IFC-SPFモデルのシンタックス検証を行う4番目のサブモジュールがあった。これは現在、IfcOpenShell の一部として直接組み込まれています。 `ifcopenshell.simple_spf`.
+
+1. **証明書ストア**：この[モジュールは](https://github.com/buildingsmart-certificates/validation-service-vendor-certificates)、IFCモデルに付加されたデジタル証明書を検証するための、信頼できる証明書のリストとして機能します。
+
+注：以前は、IFC-SPFモデルの構文検証を行う4番目のサブモジュールがありました。これは現在、IfcOpenShellの直接の一部として `ifcopenshell.simple_spf`直接組み込まれました。
 
 ## バリデーション・チェックの実行
-このアプリケーションは、1つまたは複数のIFC ファイルに対して、別々に実行できる複数の検証チェックをサポートしています：
+このアプリケーションは、1つまたは複数のIFCファイルに対する複数の検証チェックをサポートしており、別々に実行することができます：
 
 - 構文チェック
 - スキーマチェック
