@@ -64,11 +64,11 @@ SPS001_Basic-spatial-structure-for-buildings.feature
     - `@informal-proposition`
     - `@industry-practice` (警告；合否ではない）
 - それらは、一部の機能部品に3文字のアルファタグを付けなければならない。[機能部品を](./functional_parts.md)参照。
-- には、フィーチャーファイルのバージョンを 1 ベースの整数で示すタグが 1 つ含まれていなければなりません。
+- フィーチャーファイルのバージョンを 1 ベースの整数で示すタグが 1 つ含まれていなければなりません。
   - 例：`@version1` フィーチャーファイルの初期バージョン用
   - 例：`@version3` フィーチャーファイルの第3バージョン用
     - 誤字脱字の修正や説明文の書き直しなどの軽微な変更では、バージョンは上がりません。
-    - **"Given"**文や**"Then"**文、あるいはステップの実装を変更する場合は、バージョン番号を1インクリメントする必要がある。
+    - **"Given"** 文や**"Then"** 文、あるいはステップの実装を変更する場合は、バージョン番号を1インクリメントする必要がある。
 - [エラーコードを](error-codes)示す1つ以上のタグが含まれていなければならない。
   - すべてのシナリオで同じエラーが発生する場合は、**"Feature:"**行のすぐ上に次のタグを記述する。
 
@@ -144,7 +144,7 @@ Then ...
 ```
 </details>
 
- - で始まる**ルールの説明を**含めなければならない。ルールが検証するのは...
+ - ルールには「このルールは以下を確認します...」で始まる説明を含める必要があります
 
 <details><summary>例</summary>
 
@@ -346,7 +346,7 @@ And"キーワードは使用してはならない。
 許可されるキーワードは以下の通り： `Given`、`Then`。
 
 #### 既存のIfcOpenShellAPIの使用
-に含まれる既存の機能を使用しないようにしてください。 `ifcopenshell.api`名前含まれる既存の機能は使用しないでください。
+`ifcopenshell.api`名前含まれる既存の機能は使用しないでください。
 
 
 
@@ -408,7 +408,7 @@ fail-alb001-short_informative_description.ifc
 | fail-alb002-scenario01-nested_attributes_IfcAlignment | 失敗 | インスタンスIfcAlignmentは、2つのインスタンスIfcAlignmentHorizontal... をネストしている。 | エラーは説明的なものですか、それともpytestのエラーそのものですか？もしその通りなら、複数行... |
 | fail-alb002-シナリオ02-2_アラインメント | 失敗 | 以下の2つのインスタンスに遭遇した：IfcAlignment#23、IfcAlignment#906 | IfcAlignmentHorizontal、IfcAlignmentVertical、IfcAlignmentCantの場合 |
 | フェイルアルバム002-シナリオ03-レイアウト | 失敗 | インスタンス#906=IfcAlignmentは#907=IfcWallをネストしている。 | シナリオ2のエラーを含む |
-| fail-alb002-scenario04-alignment_segments | 失敗 | インスタンス#28=IfcAlignmentHorizontalは#906=IfcWallに割り当てられている。 | トドIfcAlignmentVertical,IfcAlignmentCant.空のリスト／タイポと同様に？ |
+| fail-alb002-scenario04-alignment_segments | 失敗 | インスタンス#28=IfcAlignmentHorizontalは#906=IfcWallに割り当てられている。 | @todo IfcAlignmentVertical,IfcAlignmentCant.空のリスト／タイポと同様に？ |
 
 
 
