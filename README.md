@@ -14,7 +14,7 @@
 
 
 # アプリケーションの構造
-このアプリケーションは2つのメインサブモジュールで構成されており、それぞれが別々のGitHubリポジトリでホストされています。Docker Composeは、ローカルのデプロイ用に正しいサブモジュールのバージョンを自動的にバインドするように設定されています。 
+このアプリケーションは2つのメインサブモジュールで構成されており、それぞれが別々のGitHubリポジトリでホストされています。Docker Composeは、ローカルのデプロイ用に正しいサブモジュールのバージョンを自動的にバインドするように設定されています。  
 
 ### サブモジュール
 各機能のドキュメントは各サブモジュール内にあります。
@@ -110,7 +110,7 @@ exit
 - Django API - Swagger: http://localhost/api/swagger-ui
 - Django API - Redoc: http://localhost/api/redoc
 
-1. オプションで、curlやPostmanのようなツールを使ってAPIリクエストを直接呼び出すこともできる。
+1. オプションで、curlやPostmanのようなツールを使って、APIリクエストを直接呼び出すこともできる。
 
 
 1. アップデート後にサービスを再起動する
@@ -208,7 +208,7 @@ DJANGO_SUPERUSER_USERNAME=SYSTEM DJANGO_SUPERUSER_PASSWORD=system DJANGO_SUPERUS
 - Django API - Redoc: http://localhost:8000/api/redoc
 - セロリの花 UI: http://localhost:5555
 
-1. オプションで、curlやPostmanのようなツールを使ってAPIリクエストを直接呼び出すこともできる。
+1. オプションで、curlやPostmanのようなツールを使って、APIリクエストを直接呼び出すこともできる。
 
 
 1. コード更新後にローカルサービスを再起動する
@@ -224,7 +224,7 @@ DJANGO_SUPERUSER_USERNAME=SYSTEM DJANGO_SUPERUSER_PASSWORD=system DJANGO_SUPERUS
 cd backend
 make stop-worker
 ```
-### 2.コードを更新する（githubから引っ張ってきた場合）
+### 2.コードの更新（githubから引っ張ってきた場合）
 ```shell
 make fetch-modules && make checkout
 ```

@@ -1,4 +1,4 @@
-# IFCガーキンルール
+# IFCガーキン・ルール
 ## buildingSMART検証サービスの一部としての利用
 このリポジトリは、検証サービス全体における3つのサブモジュールのうちの1つである。  
 詳しくは[application_structureを](#application-structure)参照のこと。
@@ -6,14 +6,14 @@
 実装されたルールとpythonステップ実装関数の概要は、[Gherkinルールドキュメントに](https://buildingsmart.github.io/ifc-gherkin-rules/branches/main/)記載されています。
 
 ## 変更を加える
-このリポジトリで開発されたルールは、Gherkinとそのpython実装の動作の一般的なアイデアに従っています。
+このリポジトリで開発されたルールは、Gherkinとそのpython実装の[動作の](https://behave.readthedocs.io/en/stable/)一般的なアイデアに従っています。
 
 つまり、人間が読めるルールの定義とPythonの実装があるということだ。
 
 このリポジトリの3つ目の要素は、期待される結果を備えた最小限のサンプルファイルである。これは、既存の機能を壊さないという確信を持って、拡張や修正を提案できることを意味する。
 
 ## コマンドラインの使用法
-IfcOpenShellで実装されたステップを使用したIFCビルディングモデルの自動検証のために、Gherkinで記述された非公式命題と実装者合意。
+IFC_PH_ 1_258DE270で実装されたステップを使用した、IFC建築モデルの自動検証のための、Gherkinで書かれた非公式命題と実装者合意。
 
 ```shell
 $ python -m ifc-gherkin-rules ifc-gherkin-rules\test\files\gem001\fail-gem001-cube-advanced-brep.ifc
